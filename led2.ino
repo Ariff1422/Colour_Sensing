@@ -16,7 +16,7 @@ int green = 0;
 int blue = 0;
 
 //floats to hold colour arrays
-float colourArray[] = {0,0,0};
+float storedColors[5][3]; // 5 Colors, each with RGB values
 float whiteArray[] = {0,0,0};
 float blackArray[] = {0,0,0};
 float greyDiff[] = {0,0,0};
@@ -40,49 +40,49 @@ void setup(){
 }
 
 void loop(){
-//turn on one colour at a time and LDR reads 5 times
-  /*for(int c = 0;c<=2;c++){    
-    Serial.print(colourStr[c]);
-    digitalWrite(ledArray[c],HIGH); //turn ON the LED, red, green or blue, one colour at a time.
-    delay(RGBWait);
-//get the average of 5 consecutive readings for the current colour and return an average 
-    colourArray[c] = getAvgReading(5);
-//the average reading returned minus the lowest value divided by the maximum possible range, multiplied by 255 will give a value between 0-255, representing the value for the current reflectivity (i.e. the colour LDR is exposed to)
-    colourArray[c] = (colourArray[c] - blackArray[c])/(greyDiff[c])*255;
-    digitalWrite(ledArray[c],LOW);  //turn off the current LED colour
-    delay(RGBWait);
-    Serial.println(int(colourArray[c])); //show the value for the current colour LED, which corresponds to either the R, G or B of the RGB code
-  } */
-  Serial.print(colourStr[0]); //line 56 to 65 is for red
+  read_color(); // call this to get RGB values for 5 colors
+}
+
+void read_color() {
+
+for (int colorI = 0; colorI < 5; i++) {
+  Serial.print("Place Color ");
+  Serial.print(i + 1);
+  Serial.println(" for reading...");
+  delay(5000);  // delay for five seconds for getting sample ready 
+  
+  Serial.print(colourStr[0]); //line 54 to 63 is for red
   digitalWrite(A2, HIGH);
   digitalWrite(A3, LOW);
   delay(RGBWait);
-  colourArray[0] = getAvgReading(5);
-  colourArray[0] = (colourArray[0] - blackArray[0])/(greyDiff[0])*255;
+  storedColors[colorI][0] = getAvgReading(5);
+  storedColors[colorI][0] = (storedColors[colorI][0] - blackArray[0]) / (greyDiff[0]) * 255;
   digitalWrite(A2, LOW);
   digitalWrite(A3, LOW);
   delay(RGBWait);
-  Serial.println(int(colourArray[0]));
-  Serial.print(colourStr[1]); //line 66 to 75 is for green
+  Serial.println(int(storedColors[colorI][0]));
+  
+  Serial.print(colourStr[1]); //line 65 to 74 is for green
   digitalWrite(A2, LOW);
   digitalWrite(A3, HIGH);
   delay(RGBWait);
-  colourArray[1] = getAvgReading(5);
-  colourArray[1] = (colourArray[1] - blackArray[1])/(greyDiff[1])*255;
+  storedColors[colorI][1] = getAvgReading(5);
+  storedColors[colorI][1] = (storedColors[colorI][1] - blackArray[1]) / (greyDiff[1]) * 255;
   digitalWrite(A2, LOW);
   digitalWrite(A3, LOW);
   delay(RGBWait);
-  Serial.println(int(colourArray[1]));
+  Serial.println(int(storedColors[colorI][0]));
+  
   Serial.print(colourStr[2]); //line 76 to 85 is for blue
   digitalWrite(A2, HIGH);
   digitalWrite(A3, HIGH);
   delay(RGBWait);
-  colourArray[2] = getAvgReading(5);
-  colourArray[2] = (colourArray[2] - blackArray[2])/(greyDiff[2])*255;
+  storedColors[colorI][2] = getAvgReading(5);
+  storedColors[colorI][2] = (storedColors[colorI][2] - blackArray[2]) / (greyDiff[2]) * 255;
   digitalWrite(A2, LOW);
   digitalWrite(A3, LOW);
   delay(RGBWait);
-  Serial.println(int(colourArray[2]));
+  Serial.println(int(storedColors[colorI][2]));
 }
 
 

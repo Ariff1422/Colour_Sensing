@@ -35,13 +35,7 @@ enum MovementTypes {
   STOP
 };
 
-Motion state = WALLTRACK; //default setting where it is moving forward with walltracking 
-//NEWWW - Color Sensing
-int balanceArray[3][3] = {
-{0, 0, 0},
-{0, 0, 0},
-{0, 0, 0},
-};
+enum MovementTypes movement = WALLTRACK; //default setting where it is moving forward with walltracking CHANGEDD!!
 
 enum Color {
   RED, GREEN, ORANGE, PINK, LIGHT_BLUE, WHITE,
@@ -60,7 +54,6 @@ float receiveUltrasonic();
 double receiveIR();
 
 // variables!
-enum MovementTypes movement = STRAIGHT;
 double rotation = 0;
 double left, right = 0;
 double kp = 0.07;
@@ -100,11 +93,11 @@ void loop() {
     //TODO get line follower values
     //TODO change case according to color
     #if PRINT
-      Serial.print('Left: ');
+      Serial.print("Left: ");
       Serial.print(left);
-      Serial.print(' | Right: ');
+      Serial.print(" | Right: ");
       Serial.print(right);
-      Serial.print(' | Rotation: ');
+      Serial.print(" | Rotation: ");
       Serial.print(rotation);
     #endif
     break;
@@ -167,11 +160,11 @@ void loop() {
 
 
   //Edits for the motion
-  if (state == WALLTRACK and is_at_line()){
+  if (movement == WALLTRACK && is_at_line()){
     stop_moving();
-    state == COLOR_SENSE;
+    movement = COLOR_SENSE;
   }
-  if (state == COLOR_SENSE){
+  if (movement == COLOR_SENSE){
     read_color();//Use the loop in led.ino to make it sense the colour
     int color_predict = match_color();
     /*RED, ORANGE, PINK: R > 200  
@@ -181,23 +174,23 @@ void loop() {
       GREEN: G > 200
       BLUE: B > 200
     */
-    if (color_predict == RED){
-      state = LEFT_TURN;
+    if (color_predict == RED){ //CHANGEDD all the names to movement!!
+      movement = LEFT_TURN;
     }
     else if (color_predict == GREEN){
-      state = RIGHT_TURN;
+      movement = RIGHT_TURN;
     }
     else if (color_predict == LIGHT_BLUE){
-      state = RIGHT_U_TURN;
+      movement = RIGHT_U_TURN;
     }
     else if (color_predict == ORANGE){
-      state = U_TURN;
+      movement = U_TURN;
     }
     else if (color_predict == PINK){
-      state = LEFT_U_TURN;
+      movement = LEFT_U_TURN;
     }
     else{
-      state = STOP;
+      movement = STOP;
     }
     delay(10);
 }
@@ -214,9 +207,9 @@ void differentialSteer(MeDCMotor *leftMotor, MeDCMotor *rightMotor, double motor
   double slower = 1-2*fabs(rotation);
   if (rotation < 0) { //left
     leftMotor ->run(motorSpeed);
-    rightMotor->run(motorSpeed*slower);
+    rightMotor->run(motorSpeed * slower);
   } else {
-    leftMotor->run(motorSpeed*slower);
+    leftMotor->run(motorSpeed * slower);
     rightMotor->run(motorSpeed);
   }
 }

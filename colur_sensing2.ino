@@ -83,7 +83,12 @@ void loop() {
       transmitUltrasonic();
       double left = receiveUltrasonic(); //in cm
     }
-    // ir receiver and transnmitter
+
+    if (is_at_line()){   
+       stop_moving();
+       movement = COLOR_SENSE;
+    }
+      // ir receiver and transnmitter
     digitalWrite(PIN_A, LOW);
     digitalWrite(PIN_B, LOW);
     double right = receiveIR(); //in cm
